@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+
 import '../theme/colors.dart';
 import '../widgets/layout/app_scaffold.dart';
 import '../widgets/design_message.dart';
@@ -32,13 +33,13 @@ class _AgreementsScreenState extends State<AgreementsScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'All Agreements',
                       style: TextStyle(
                         fontSize: 32,
@@ -46,7 +47,7 @@ class _AgreementsScreenState extends State<AgreementsScreen> {
                         color: AppColors.designText,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6),
                     Text(
                       'A comprehensive directory of our standard forms and contracts.',
                       style: TextStyle(
@@ -122,7 +123,9 @@ class _AgreementsScreenState extends State<AgreementsScreen> {
                         const Spacer(),
                         const SizedBox(height: 8),
                         RentalCardPill(
-                            label: 'Read Agreement', route: '/pages/${p.slug}'),
+                          label: 'Read Agreement',
+                          route: '/pages/${p.slug}',
+                        ),
                       ],
                     ),
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../theme/colors.dart';
 
 class LegalDocumentRenderer extends StatelessWidget {
@@ -160,30 +161,41 @@ class LegalDocumentRenderer extends StatelessWidget {
 
     for (final m in matches) {
       final chunk = m.group(0)!;
-      final tagMatch =
-          RegExp(r'^<([a-z0-9]+)', caseSensitive: false).firstMatch(chunk);
+      final tagMatch = RegExp(
+        r'^<([a-z0-9]+)',
+        caseSensitive: false,
+      ).firstMatch(chunk);
       final tag = tagMatch?.group(1)?.toLowerCase() ?? '';
 
       if (tag == 'h1') {
-        final inner = _stripHtml(chunk
-            .replaceFirst(RegExp(r'^<h1[^>]*>', caseSensitive: false), '')
-            .replaceFirst(RegExp(r'</h1>$', caseSensitive: false), ''));
+        final inner = _stripHtml(
+          chunk
+              .replaceFirst(RegExp(r'^<h1[^>]*>', caseSensitive: false), '')
+              .replaceFirst(RegExp(r'</h1>$', caseSensitive: false), ''),
+        );
         blocks.add(_Block(type: _BlockType.h1, text: inner));
       } else if (tag == 'h2') {
-        final inner = _stripHtml(chunk
-            .replaceFirst(RegExp(r'^<h2[^>]*>', caseSensitive: false), '')
-            .replaceFirst(RegExp(r'</h2>$', caseSensitive: false), ''));
+        final inner = _stripHtml(
+          chunk
+              .replaceFirst(RegExp(r'^<h2[^>]*>', caseSensitive: false), '')
+              .replaceFirst(RegExp(r'</h2>$', caseSensitive: false), ''),
+        );
         blocks.add(_Block(type: _BlockType.h2, text: inner));
       } else if (tag == 'h3') {
-        final inner = _stripHtml(chunk
-            .replaceFirst(RegExp(r'^<h3[^>]*>', caseSensitive: false), '')
-            .replaceFirst(RegExp(r'</h3>$', caseSensitive: false), ''));
+        final inner = _stripHtml(
+          chunk
+              .replaceFirst(RegExp(r'^<h3[^>]*>', caseSensitive: false), '')
+              .replaceFirst(RegExp(r'</h3>$', caseSensitive: false), ''),
+        );
         blocks.add(_Block(type: _BlockType.h3, text: inner));
       } else if (tag == 'hr') {
         blocks.add(_Block(type: _BlockType.hr, text: ''));
       } else if (tag == 'ul') {
-        final liRegex =
-            RegExp(r'<li[^>]*>(.*?)</li>', caseSensitive: false, dotAll: true);
+        final liRegex = RegExp(
+          r'<li[^>]*>(.*?)</li>',
+          caseSensitive: false,
+          dotAll: true,
+        );
         final items = <String>[];
         for (final lim in liRegex.allMatches(chunk)) {
           items.add(lim.group(1) ?? '');
@@ -226,8 +238,10 @@ class LegalDocumentRenderer extends StatelessWidget {
 
   static List<InlineSpan> _parseInlineSpans(String html) {
     // Replace <br> with \n
-    final text =
-        html.replaceAll(RegExp(r'<br\s*/?>', caseSensitive: false), '\n');
+    final text = html.replaceAll(
+      RegExp(r'<br\s*/?>', caseSensitive: false),
+      '\n',
+    );
     final spans = <InlineSpan>[];
 
     // Regex for inline tags: <strong>, <em>, <a href="...">
@@ -254,23 +268,31 @@ class LegalDocumentRenderer extends StatelessWidget {
       if (chunk.toLowerCase().startsWith('<strong') ||
           chunk.toLowerCase().startsWith('<b')) {
         final inner = chunk.replaceAll(
-            RegExp(r'</?(strong|b)[^>]*>', caseSensitive: false), '');
+          RegExp(r'</?(strong|b)[^>]*>', caseSensitive: false),
+          '',
+        );
         spans.add(
           TextSpan(
             text: _decodeEntities(inner),
             style: const TextStyle(
-                fontWeight: FontWeight.w700, color: AppColors.designText),
+              fontWeight: FontWeight.w700,
+              color: AppColors.designText,
+            ),
           ),
         );
       } else if (chunk.toLowerCase().startsWith('<em') ||
           chunk.toLowerCase().startsWith('<i')) {
         final inner = chunk.replaceAll(
-            RegExp(r'</?(em|i)[^>]*>', caseSensitive: false), '');
+          RegExp(r'</?(em|i)[^>]*>', caseSensitive: false),
+          '',
+        );
         spans.add(
           TextSpan(
             text: _decodeEntities(inner),
             style: const TextStyle(
-                fontStyle: FontStyle.italic, color: Color(0xFF666666)),
+              fontStyle: FontStyle.italic,
+              color: Color(0xFF666666),
+            ),
           ),
         );
       } else if (chunk.toLowerCase().startsWith('<a')) {
@@ -319,9 +341,5 @@ class _Block {
   final String text;
   final List<String> items;
 
-  _Block({
-    required this.type,
-    required this.text,
-    this.items = const [],
-  });
+  _Block({required this.type, required this.text, this.items = const []});
 }

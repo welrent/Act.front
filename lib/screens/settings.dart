@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+
 import '../theme/colors.dart';
 import '../widgets/layout/app_scaffold.dart';
 import '../widgets/design_message.dart';
@@ -52,16 +53,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   void dispose() {
-    for (final c in _controllers.values) c.dispose();
+    for (final c in _controllers.values) {
+      c.dispose();
+    }
     super.dispose();
   }
 
   void _onChanged(String key, String value) {
     setState(() {
       _settings = _settings
-          .map((s) => s.key == key
-              ? SiteSetting(key: s.key, value: value, label: s.label)
-              : s)
+          .map(
+            (s) => s.key == key
+                ? SiteSetting(key: s.key, value: value, label: s.label)
+                : s,
+          )
           .toList();
     });
   }
@@ -106,16 +111,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               gradient: const LinearGradient(
                 colors: [
                   AppColors.panelGradientStart,
-                  AppColors.panelGradientEnd
+                  AppColors.panelGradientEnd,
                 ],
               ),
             ),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    const Text(
+                    Text(
                       'Admin Panel · Global Settings',
                       style: TextStyle(
                         fontSize: 10,
@@ -126,18 +131,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                const Text(
+                SizedBox(height: 8),
+                Text(
                   'Company Settings',
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800),
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: 6),
                 Text(
                   'These values replace placeholders like [COMPANY_ADDRESS] across all legal pages automatically.',
-                  style: const TextStyle(color: Colors.white70, fontSize: 13),
+                  style: TextStyle(color: Colors.white70, fontSize: 13),
                 ),
               ],
             ),
@@ -165,7 +171,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 20),
+                            horizontal: 24,
+                            vertical: 20,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -182,7 +190,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   const SizedBox(width: 8),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 2),
+                                      horizontal: 8,
+                                      vertical: 2,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: const Color(0xFFF4F5F6),
                                       borderRadius: BorderRadius.circular(10),
@@ -212,19 +222,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   hintText:
                                       'Enter ${setting.label?.toLowerCase() ?? ''}...',
                                   hintStyle: const TextStyle(
-                                      fontSize: 13,
-                                      color: AppColors.designMuted),
+                                    fontSize: 13,
+                                    color: AppColors.designMuted,
+                                  ),
                                   contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 14, vertical: 12),
+                                    horizontal: 14,
+                                    vertical: 12,
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                     borderSide: const BorderSide(
-                                        color: Color(0xFFE8E4F2)),
+                                      color: Color(0xFFE8E4F2),
+                                    ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                     borderSide: const BorderSide(
-                                        color: Color(0xFF9B7FD4)),
+                                      color: Color(0xFF9B7FD4),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -252,7 +267,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: const Text(
               '💡 How it works: When a visitor opens a legal page (e.g. Car Rental Agreement), the system automatically replaces all placeholders with the values you set here. No manual editing of each page required.',
               style: TextStyle(
-                  fontSize: 13, color: AppColors.designText, height: 1.6),
+                fontSize: 13,
+                color: AppColors.designText,
+                height: 1.6,
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -268,8 +286,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Align(
             child: TextButton(
               onPressed: () => GoRouter.of(context).push('/secret-panel'),
-              child: const Text('← Back to Control Panel',
-                  style: TextStyle(fontSize: 13, color: AppColors.designMuted)),
+              child: const Text(
+                '← Back to Control Panel',
+                style: TextStyle(fontSize: 13, color: AppColors.designMuted),
+              ),
             ),
           ),
           const SizedBox(height: 40),

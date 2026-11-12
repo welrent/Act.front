@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../theme/colors.dart';
 import '../../widgets/layout/app_scaffold.dart';
 
@@ -38,9 +39,9 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               alignment: Alignment.center,
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Text(
                     'Welcome',
                     style: TextStyle(
@@ -80,12 +81,12 @@ class HomeScreen extends StatelessWidget {
           ),
 
           // Rental Agreements Pills
-          Padding(
-            padding: const EdgeInsets.only(bottom: 24),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 24),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: const [
+                children: [
                   _RentalPill(
                     label: 'Car rental contract',
                     route: '/pages/car-rental-agreement',
@@ -115,8 +116,8 @@ class HomeScreen extends StatelessWidget {
             builder: (context, constraints) {
               final isTwoColumn = constraints.maxWidth >= 600;
               if (isTwoColumn) {
-                return Column(
-                  children: const [
+                return const Column(
+                  children: [
                     Row(
                       children: [
                         Expanded(
@@ -164,8 +165,8 @@ class HomeScreen extends StatelessWidget {
                 );
               }
 
-              return Column(
-                children: const [
+              return const Column(
+                children: [
                   _LegalCard(
                     title: 'Terms of Service',
                     desc:

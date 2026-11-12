@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
 import '../../theme/colors.dart';
 import '../../providers/app_state.dart';
 
@@ -38,13 +39,25 @@ class Sidebar extends StatelessWidget {
           _sidebarLink(context, 'Dashboard', '/'),
           _sidebarLink(context, 'My Profile', '/profile'),
           _sidebarLink(
-              context, 'Car Agreements', '/pages/car-rental-agreement'),
-          _sidebarLink(context, 'Motorcycle Agreements',
-              '/pages/motorcycle-rental-agreement'),
+            context,
+            'Car Agreements',
+            '/pages/car-rental-agreement',
+          ),
           _sidebarLink(
-              context, 'Boat Agreements', '/pages/boat-rental-agreement'),
-          _sidebarLink(context, 'Equipment Agreements',
-              '/pages/equipment-rental-agreement'),
+            context,
+            'Motorcycle Agreements',
+            '/pages/motorcycle-rental-agreement',
+          ),
+          _sidebarLink(
+            context,
+            'Boat Agreements',
+            '/pages/boat-rental-agreement',
+          ),
+          _sidebarLink(
+            context,
+            'Equipment Agreements',
+            '/pages/equipment-rental-agreement',
+          ),
           const SizedBox(height: 24),
           _sectionTitle('Legal Hub'),
           _sidebarLink(context, 'Terms of Service', '/pages/terms'),
@@ -81,16 +94,28 @@ class Sidebar extends StatelessWidget {
             _mobilePill(context, 'My Profile', '/profile'),
             const SizedBox(width: 8),
             _mobilePill(
-                context, 'Car Agreements', '/pages/car-rental-agreement'),
-            const SizedBox(width: 8),
-            _mobilePill(context, 'Motorcycle Agreements',
-                '/pages/motorcycle-rental-agreement'),
+              context,
+              'Car Agreements',
+              '/pages/car-rental-agreement',
+            ),
             const SizedBox(width: 8),
             _mobilePill(
-                context, 'Boat Agreements', '/pages/boat-rental-agreement'),
+              context,
+              'Motorcycle Agreements',
+              '/pages/motorcycle-rental-agreement',
+            ),
             const SizedBox(width: 8),
-            _mobilePill(context, 'Equipment Agreements',
-                '/pages/equipment-rental-agreement'),
+            _mobilePill(
+              context,
+              'Boat Agreements',
+              '/pages/boat-rental-agreement',
+            ),
+            const SizedBox(width: 8),
+            _mobilePill(
+              context,
+              'Equipment Agreements',
+              '/pages/equipment-rental-agreement',
+            ),
             const SizedBox(width: 8),
             _mobilePill(context, 'Terms of Service', '/pages/terms'),
             const SizedBox(width: 8),

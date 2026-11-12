@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+
 import '../theme/colors.dart';
 import '../widgets/layout/app_scaffold.dart';
 import '../widgets/legal_document_renderer.dart';
@@ -40,9 +41,7 @@ class _PageDetailScreenState extends State<PageDetailScreen> {
       try {
         page = SeedData.pages.firstWhere((p) => p.slug == widget.slug);
       } catch (_) {
-        if (widget.slug.contains('car') || widget.slug.isEmpty) {
-          page = SeedData.pages.first;
-        }
+        page = null;
       }
     }
 
@@ -98,14 +97,18 @@ class _NotFound extends StatelessWidget {
                 backgroundColor: AppColors.pillBg,
                 foregroundColor: AppColors.designText,
                 elevation: 0,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6),
                 ),
               ),
-              child: const Text('Go Back Home',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Go Back Home',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
             ),
           ],
         ),

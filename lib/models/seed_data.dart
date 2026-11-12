@@ -436,7 +436,9 @@ Email: [EMAIL]<br>
 
   static final List<SiteSetting> settings = [
     SiteSetting(
-        key: 'COMPANY_ADDRESS', value: 'Welrent AutoVerhuur, The Netherlands'),
+      key: 'COMPANY_ADDRESS',
+      value: 'Welrent AutoVerhuur, The Netherlands',
+    ),
     SiteSetting(key: 'CHAMBER_OF_COMMERCE_NUMBER', value: 'KVK pending'),
     SiteSetting(key: 'VAT_NUMBER', value: 'NL VAT pending'),
     SiteSetting(key: 'EMAIL', value: 'hello@welrent.com'),

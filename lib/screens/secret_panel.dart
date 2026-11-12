@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+
 import '../theme/colors.dart';
 import '../widgets/layout/app_scaffold.dart';
 import '../providers/app_state.dart';
@@ -15,16 +16,19 @@ class SecretPanelScreen extends StatelessWidget {
     final canAccess = state.auth.canAccessAdmin;
 
     if (!state.auth.user.isAuthenticated) {
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => GoRouter.of(context).push('/'));
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => GoRouter.of(context).push('/'),
+      );
       return const Center(child: CircularProgressIndicator());
     }
 
     if (!canAccess) {
-      return AppScaffold(
-        body: const Center(
-          child: Text('Access restricted to admins and workers.',
-              style: TextStyle(color: AppColors.designMuted)),
+      return const AppScaffold(
+        body: Center(
+          child: Text(
+            'Access restricted to admins and workers.',
+            style: TextStyle(color: AppColors.designMuted),
+          ),
         ),
       );
     }
@@ -41,7 +45,7 @@ class SecretPanelScreen extends StatelessWidget {
               gradient: const LinearGradient(
                 colors: [
                   AppColors.panelGradientStart,
-                  AppColors.panelGradientEnd
+                  AppColors.panelGradientEnd,
                 ],
               ),
             ),
@@ -57,7 +61,7 @@ class SecretPanelScreen extends StatelessWidget {
                         color: Color(0xFF22C55E),
                         shape: BoxShape.circle,
                         boxShadow: [
-                          BoxShadow(color: Color(0xFF22C55E), blurRadius: 8)
+                          BoxShadow(color: Color(0xFF22C55E), blurRadius: 8),
                         ],
                       ),
                     ),
@@ -180,9 +184,10 @@ class SecretPanelScreen extends StatelessWidget {
             Text(
               value,
               style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700),
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             const SizedBox(height: 3),
             Text(
@@ -278,7 +283,10 @@ class SecretPanelScreen extends StatelessWidget {
           Text(
             desc,
             style: const TextStyle(
-                fontSize: 13, color: Color(0xFF9C9CA0), height: 1.6),
+              fontSize: 13,
+              color: Color(0xFF9C9CA0),
+              height: 1.6,
+            ),
           ),
           const Spacer(),
           Opacity(

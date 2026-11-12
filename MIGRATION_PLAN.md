@@ -89,11 +89,10 @@ No direct DB access from Flutter — all via PHP API.
 
 ## Known Limitations
 
-1. **Firebase Auth not configured** — app runs in demo mode. Accepts `admin@id.welrent.com` / `WelrentAdmin2026!#`.
-2. **PHP backend not running locally** — API integration not end-to-end tested without live PHP + MySQL.
-3. **CORS required** — PHP backend must emit CORS headers for Flutter origin.
-4. **Neon Postgres** — referenced in task but existing app uses MySQL/MariaDB. No DB migration performed.
-5. **Milkadmin secret-panel** — separate PHP control panel, not part of Flutter migration.
+1. **Google sign-in** is not wired. Email and password go to `POST /api/auth/login`, which rejects unknown passwords.
+2. **AI Gateway** is declared in `neon.ts`. `neon deploy` needs an authenticated `neon login`, so summarize returns 503 until that token exists.
+3. **Local API** listens on port 8787 and uses the pooled Lakebase connection. Flutter defaults to `http://127.0.0.1:8787`.
+4. **Milkadmin secret-panel** PHP app is not embedded. Flutter secret-panel screens edit pages and settings through the JSON API.
 
 ## Deliverables
 

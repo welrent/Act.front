@@ -41,3 +41,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+.neon
+node_modules/
+dist/
+.env
+.env.local
+*.tsbuildinfo

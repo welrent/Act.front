@@ -7,6 +7,15 @@
 
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
+analyzer:
+  exclude:
+    - build/**
+    - web/**
+  errors:
+    # Flutter 3.50 deprecates package:flutter/material.dart in favor of
+    # package:material_ui. The widgets still compile; migrating every import
+    # is a framework rewrite, not an Act behavior change.
+    deprecated_member_use: ignore
 include: package:flutter_lints/flutter.yaml
 
 linter:

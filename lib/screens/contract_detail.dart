@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../theme/colors.dart';
 import '../widgets/layout/app_scaffold.dart';
 import '../widgets/legal_document_renderer.dart';
@@ -43,10 +44,7 @@ class _ContractDetailScreenState extends State<ContractDetailScreen> {
           (c) => c.contractRef == widget.ref || c.bookingRef == widget.ref,
         );
       } catch (_) {
-        // Fallback default
-        if (widget.ref.contains('DEMO1') || widget.ref.isNotEmpty) {
-          contract = SeedData.contracts.first;
-        }
+        contract = null;
       }
     }
 
@@ -58,9 +56,10 @@ class _ContractDetailScreenState extends State<ContractDetailScreen> {
             const Center(
               child: Padding(
                 padding: EdgeInsets.all(40),
-                child: Text('Contract not found.',
-                    style:
-                        TextStyle(color: AppColors.designMuted, fontSize: 16)),
+                child: Text(
+                  'Contract not found.',
+                  style: TextStyle(color: AppColors.designMuted, fontSize: 16),
+                ),
               ),
             ),
           ] else ...[
@@ -120,11 +119,7 @@ class _ContractDetailScreenState extends State<ContractDetailScreen> {
                   if (isNarrow) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        details,
-                        const SizedBox(height: 16),
-                        buttons,
-                      ],
+                      children: [details, const SizedBox(height: 16), buttons],
                     );
                   }
 
@@ -142,9 +137,7 @@ class _ContractDetailScreenState extends State<ContractDetailScreen> {
             // Legal Content outside the card on white background
             Container(
               constraints: const BoxConstraints(maxWidth: 860),
-              child: LegalDocumentRenderer(
-                html: contract.contractHtml ?? '',
-              ),
+              child: LegalDocumentRenderer(html: contract.contractHtml ?? ''),
             ),
             const SizedBox(height: 40),
           ],
