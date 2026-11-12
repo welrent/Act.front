@@ -28,12 +28,7 @@ class PageItem {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'title': title,
-      'slug': slug,
-      'content': content,
-    };
+    return {'id': id, 'title': title, 'slug': slug, 'content': content};
   }
 
   static DateTime? _parseDate(dynamic value) {
@@ -53,11 +48,7 @@ class SiteSetting {
   final String value;
   final String? label;
 
-  SiteSetting({
-    required this.key,
-    required this.value,
-    this.label,
-  });
+  SiteSetting({required this.key, required this.value, this.label});
 
   factory SiteSetting.fromMap(Map<String, dynamic> map) {
     return SiteSetting(
@@ -68,11 +59,7 @@ class SiteSetting {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'key': key,
-      'value': value,
-      if (label != null) 'label': label,
-    };
+    return {'key': key, 'value': value, if (label != null) 'label': label};
   }
 }
 

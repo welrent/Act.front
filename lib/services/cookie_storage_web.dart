@@ -17,8 +17,7 @@ bool hasConsent(String key) {
 void setConsent(String key) {
   try {
     html.window.localStorage[key] = 'true';
-    html.document.cookie =
-        '$key=true; max-age=31536000; path=/; SameSite=Lax';
+    html.document.cookie = '$key=true; max-age=31536000; path=/; SameSite=Lax';
     html.document.cookie =
         'cookieConsentAct=true; max-age=31536000; path=/; SameSite=Lax';
   } catch (_) {}

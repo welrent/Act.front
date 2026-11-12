@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../theme/colors.dart';
 import '../widgets/layout/app_scaffold.dart';
 import '../widgets/design_message.dart';
@@ -59,9 +60,10 @@ class _EditorScreenState extends State<EditorScreen> {
       _statusMessage = 'Saving changes...';
     });
     try {
-      final ok = await context
-          .read<AppState>()
-          .updatePageContent(_selected!.id, _content);
+      final ok = await context.read<AppState>().updatePageContent(
+            _selected!.id,
+            _content,
+          );
       if (!mounted) return;
       setState(() {
         _saving = false;
@@ -69,10 +71,16 @@ class _EditorScreenState extends State<EditorScreen> {
           _statusType = 'success';
           _statusMessage = 'Changes saved successfully!';
           _pages = _pages
-              .map((p) => p.id == _selected!.id
-                  ? PageItem(
-                      id: p.id, title: p.title, slug: p.slug, content: _content)
-                  : p)
+              .map(
+                (p) => p.id == _selected!.id
+                    ? PageItem(
+                        id: p.id,
+                        title: p.title,
+                        slug: p.slug,
+                        content: _content,
+                      )
+                    : p,
+              )
               .toList();
         } else {
           _statusType = 'error';
@@ -135,7 +143,9 @@ class _EditorScreenState extends State<EditorScreen> {
                                 onTap: () => _selectPage(p),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 14, vertical: 10),
+                                    horizontal: 14,
+                                    vertical: 10,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: active
                                         ? const Color(0xFFEEE9F8)
@@ -182,9 +192,10 @@ class _EditorScreenState extends State<EditorScreen> {
                             const Text(
                               'Site Text Editor',
                               style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.designText),
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.designText,
+                              ),
                             ),
                             GradientButton(
                               label: _saving ? 'Saving...' : 'Save Changes',
@@ -221,8 +232,9 @@ class _EditorScreenState extends State<EditorScreen> {
                                     Text(
                                       'Editing: ${_selected!.title}',
                                       style: const TextStyle(
-                                          fontSize: 12,
-                                          color: AppColors.designMuted),
+                                        fontSize: 12,
+                                        color: AppColors.designMuted,
+                                      ),
                                     ),
                                   ],
                                   const SizedBox(width: 16),
@@ -233,8 +245,9 @@ class _EditorScreenState extends State<EditorScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(16),
                                   child: TextField(
-                                    controller:
-                                        TextEditingController(text: _content),
+                                    controller: TextEditingController(
+                                      text: _content,
+                                    ),
                                     onChanged: (v) =>
                                         setState(() => _content = v),
                                     maxLines: null,
@@ -256,8 +269,9 @@ class _EditorScreenState extends State<EditorScreen> {
                               ),
                               if (_statusMessage != null)
                                 StatusBanner(
-                                    type: _statusType ?? 'info',
-                                    message: _statusMessage!),
+                                  type: _statusType ?? 'info',
+                                  message: _statusMessage!,
+                                ),
                               Container(
                                 height: 1,
                                 color: AppColors.designBorder,
@@ -280,7 +294,8 @@ class _EditorScreenState extends State<EditorScreen> {
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: Border.all(
-                                        color: AppColors.designBorder),
+                                      color: AppColors.designBorder,
+                                    ),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: _previewHtml(_content),
@@ -304,10 +319,14 @@ class _EditorScreenState extends State<EditorScreen> {
   Widget _previewHtml(String html) {
     if (html.isEmpty) return const SizedBox();
     var result = html;
-    result =
-        result.replaceAll(RegExp(r'<br\s*/?>', caseSensitive: false), '\n');
     result = result.replaceAll(
-        RegExp(r'</(p|div|h[1-6]|li)>', caseSensitive: false), '\n');
+      RegExp(r'<br\s*/?>', caseSensitive: false),
+      '\n',
+    );
+    result = result.replaceAll(
+      RegExp(r'</(p|div|h[1-6]|li)>', caseSensitive: false),
+      '\n',
+    );
     result = result.replaceAll(RegExp(r'<[^>]*>'), '');
     result = result
         .replaceAll('&amp;', '&')
@@ -318,7 +337,10 @@ class _EditorScreenState extends State<EditorScreen> {
     return Text(
       result.trim().isEmpty ? '' : result.trim(),
       style: const TextStyle(
-          fontSize: 15, color: AppColors.designText, height: 1.6),
+        fontSize: 15,
+        color: AppColors.designText,
+        height: 1.6,
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import '../services/auth_service.dart';
 import '../services/api_client.dart';
 import '../models/contract.dart';
@@ -9,8 +10,8 @@ import '../models/seed_data.dart';
 /// Combined app state provider.
 /// Holds AuthService + ApiClient and exposes cached data + convenience methods.
 class AppState extends ChangeNotifier {
-  final AuthService auth = AuthService();
   final ApiClient api = ApiClient();
+  late final AuthService auth = AuthService(api);
 
   // Data caches pre-populated with SeedData from Next.js
   List<Contract> _contracts = List.from(SeedData.contracts);
@@ -33,6 +34,8 @@ class AppState extends ChangeNotifier {
 
   AppState() {
     auth.addListener(_onAuthChanged);
+    loadPages();
+    loadSettings();
   }
 
   void _onAuthChanged() {
@@ -98,7 +101,7 @@ class AppState extends ChangeNotifier {
           (c) => c.contractRef == ref || c.bookingRef == ref,
         );
       } catch (_) {
-        return SeedData.contracts.isNotEmpty ? SeedData.contracts.first : null;
+        return null;
       }
     }
   }
@@ -157,7 +160,7 @@ class AppState extends ChangeNotifier {
     _error = null;
     notifyListeners();
     try {
-      final fetched = await api.getPages();
+      final fetched = await api.listPublicPages();
       if (fetched.isNotEmpty) {
         _pages = fetched;
       }
@@ -199,7 +202,7 @@ class AppState extends ChangeNotifier {
     _error = null;
     notifyListeners();
     try {
-      final fetched = await api.getSettings();
+      final fetched = await api.listPublicSettings();
       if (fetched.isNotEmpty) {
         _settings = fetched;
       }

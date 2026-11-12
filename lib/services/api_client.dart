@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+
 import '../models/contract.dart';
 import '../models/page.dart';
 import '../models/user.dart';
@@ -12,7 +14,7 @@ class ApiConfig {
     const fromDefine = String.fromEnvironment('API_BASE_URL', defaultValue: '');
     if (fromDefine.isNotEmpty) return fromDefine;
     // In production on act.welrent.com, same-origin. Default to localhost for dev.
-    return 'http://127.0.0.1:3000';
+    return 'http://127.0.0.1:8787';
   }
 }
 
@@ -31,6 +33,7 @@ class ApiClient {
   final http.Client _client;
   final String baseUrl;
   final Map<String, String> _defaultHeaders;
+  String? token;
 
   ApiClient({http.Client? client, String? baseUrl})
       : _client = client ?? http.Client(),
@@ -40,11 +43,18 @@ class ApiClient {
           'Accept': 'application/json',
         };
 
+  Map<String, String> _headers(Map<String, String>? extra) {
+    return {
+      ..._defaultHeaders,
+      if (token != null && token!.isNotEmpty) 'Authorization': 'Bearer $token',
+      ...?extra,
+    };
+  }
+
   /// GET helper
   Future<http.Response> get(String path, {Map<String, String>? headers}) async {
     final uri = Uri.parse('$baseUrl$path');
-    final allHeaders = {..._defaultHeaders, ...?headers};
-    final response = await _client.get(uri, headers: allHeaders);
+    final response = await _client.get(uri, headers: _headers(headers));
     return _handle(response);
   }
 
@@ -55,21 +65,21 @@ class ApiClient {
     Map<String, String>? headers,
   }) async {
     final uri = Uri.parse('$baseUrl$path');
-    final allHeaders = {..._defaultHeaders, ...?headers};
     final response = await _client.post(
       uri,
-      headers: allHeaders,
+      headers: _headers(headers),
       body: body != null ? jsonEncode(body) : null,
     );
     return _handle(response);
   }
 
   /// DELETE helper
-  Future<http.Response> delete(String path,
-      {Map<String, String>? headers}) async {
+  Future<http.Response> delete(
+    String path, {
+    Map<String, String>? headers,
+  }) async {
     final uri = Uri.parse('$baseUrl$path');
-    final allHeaders = {..._defaultHeaders, ...?headers};
-    final response = await _client.delete(uri, headers: allHeaders);
+    final response = await _client.delete(uri, headers: _headers(headers));
     return _handle(response);
   }
 
@@ -135,6 +145,43 @@ class ApiClient {
 
   // ── Pages ──────────────────────────────────────────────────────────
 
+  /// POST /api/auth/login
+  Future<({String token, AppUser user})> login(
+    String email,
+    String password,
+  ) async {
+    final response = await post(
+      '/api/auth/login',
+      body: {'email': email, 'password': password},
+    );
+    final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+    final userMap = Map<String, dynamic>.from(decoded['user'] as Map);
+    if (decoded['role'] != null) userMap['role'] = decoded['role'];
+    final sessionToken = decoded['token']?.toString() ?? '';
+    token = sessionToken;
+    return (token: sessionToken, user: AppUser.fromMap(userMap));
+  }
+
+  /// GET /api/pages — public legal pages with placeholders filled.
+  Future<List<PageItem>> listPublicPages() async {
+    final response = await get('/api/pages');
+    final decoded = jsonDecode(response.body);
+    if (decoded is! List) return [];
+    return decoded
+        .map((e) => PageItem.fromMap(Map<String, dynamic>.from(e)))
+        .toList();
+  }
+
+  /// GET /api/site-settings
+  Future<List<SiteSetting>> listPublicSettings() async {
+    final response = await get('/api/site-settings');
+    final decoded = jsonDecode(response.body);
+    if (decoded is! List) return [];
+    return decoded
+        .map((e) => SiteSetting.fromMap(Map<String, dynamic>.from(e)))
+        .toList();
+  }
+
   /// GET /api/admin/pages
   Future<List<PageItem>> getPages() async {
     final response = await get('/api/admin/pages');
@@ -185,11 +232,7 @@ class ApiClient {
   }) async {
     final response = await post(
       '/api/auth/session',
-      body: {
-        'idToken': idToken,
-        'email': email,
-        'uid': uid,
-      },
+      body: {'idToken': idToken, 'email': email, 'uid': uid},
     );
     final decoded = jsonDecode(response.body) as Map<String, dynamic>;
     final role = decoded['role'] ?? 'user';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../theme/colors.dart';
 import '../../services/cookie_storage.dart';
 
@@ -64,10 +65,7 @@ class _FooterState extends State<Footer> {
           ),
           const Text(
             '© 2026',
-            style: TextStyle(
-              color: Color(0xFFCBCBCF),
-              fontSize: 14,
-            ),
+            style: TextStyle(color: Color(0xFFCBCBCF), fontSize: 14),
           ),
         ],
       ),
@@ -192,10 +190,10 @@ class _FixedCookieBannerState extends State<FixedCookieBanner> {
   }
 
   Widget _buildTextContent() {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
-      children: const [
+      children: [
         Text(
           'We value your privacy.',
           style: TextStyle(
@@ -224,9 +222,7 @@ class _FixedCookieBannerState extends State<FixedCookieBanner> {
         backgroundColor: AppColors.cookieBannerBorder,
         foregroundColor: AppColors.designText,
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         elevation: 0,
       ),
       child: const Text(

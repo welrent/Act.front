@@ -4,16 +4,16 @@
 
 This is a genuine Flutter Web application that migrates the frontend of the Welrent Act PHP/Next.js system (https://github.com/welrent/Act).
 
-The Flutter app preserves the original design, user experience, features, and business workflows, and connects to the existing PHP backend API.
+The Flutter app preserves the original design, user experience, features, and business workflows. It talks to a JSON API in this repository. The API stores data in Lakebase Postgres and files in Neon Object Storage. The Flutter client never opens a database connection.
 
 ## Architecture
 
 - **Frontend**: Flutter Web (Dart), compiled to static HTML/JS/CSS
 - **Routing**: `go_router` — mirrors original Next.js/PHP routes
 - **State Management**: `provider` (ChangeNotifier) — `AppState` holds `AuthService` + `ApiClient`
-- **API Client**: `http` package — calls PHP JSON endpoints (no direct DB access)
+- **API Client**: `http` package — calls the JSON API (no direct DB access)
 - **Theme**: Custom `ThemeData` matching original design tokens (Inter font, color palette, spacing)
-- **Auth**: `AuthService` with demo mode (no Firebase required) + Firebase-ready hook
+- **Auth**: email and password checked by `POST /api/auth/login`; the client stores a bearer token
 
 ## Project Structure
 
@@ -31,7 +31,7 @@ lib/
     app_state.dart       # Combined state (auth + data)
   services/
     api_client.dart      # HTTP API client
-    auth_service.dart    # Auth state (demo + Firebase ready)
+    auth_service.dart    # Email/password sessions against the API
   widgets/
     layout/
       app_scaffold.dart  # Sidebar + Header + Footer layout
@@ -62,26 +62,28 @@ web/
 |---|-------|---------|-----------------|
 | 1 | `/` | Homepage with hero banner, rental pills, legal pages | — |
 | 2 | `/pages/:slug` | Dynamic legal pages (terms, privacy, cookie, accessibility, agreements) | — |
-| 3 | `/agreements` | Agreements listing with Read links | `GET /api/admin/pages` |
+| 3 | `/agreements` | Agreements listing with Read links | `GET /api/pages` |
 | 4 | `/contracts/:ref` | Contract detail with full HTML content | `GET /api/contracts/[ref]` |
 | 5 | `/profile` | My profile + contracts list | `GET /api/contracts?uid=` |
 | 6 | `/portal/:username` | Portal profile (auth-gated) | — |
 | 7 | `/secret-panel` | Control panel (admin/worker) | — |
 | 8 | `/secret-panel/settings` | Company settings (placeholder replacement) | `GET/POST /api/admin/settings` |
 | 9 | `/secret-panel/editor` | Site text editor (HTML) | `GET/POST /api/admin/pages` |
-| 10 | Login modal | Email/password sign-in (demo mode) | `POST /api/auth/session` |
+| 10 | Login modal | Email/password sign-in (wrong passwords fail) | `POST /api/auth/login` |
 | 11 | Search (header) | Debounced search across pages/agreements/contracts | `GET /api/search?q=` |
 | 12 | Footer | Cookie consent + language switcher | — |
 | 13 | Sidebar | Role-based navigation (admin/worker see admin tools) | — |
 
-## PHP Endpoints Reused
+## API Endpoints
 
-All existing PHP API contracts are preserved:
-- `POST /api/sso/verify`, `POST /api/sso/logout`
-- `GET/POST /api/contracts`, `GET /api/contracts/[ref]`
-- `POST/DELETE /api/auth/session`
+The Hono API keeps the JSON shapes the Flutter client already used, and adds public reads:
+- `GET /api/health`
+- `POST /api/auth/login`, `GET /api/auth/me`, `DELETE /api/auth/session`
+- `GET/POST /api/contracts`, `GET /api/contracts/:ref` (create is idempotent on `booking_ref`)
+- `GET /api/pages`, `GET /api/pages/:slug`, `GET /api/site-settings`
 - `GET /api/search?q=`
-- `GET/POST /api/admin/pages`, `GET/POST /api/admin/settings`
+- `GET/POST /api/admin/pages`, `GET/POST /api/admin/settings` (staff bearer token)
+- `POST /api/contact`, `POST /api/uploads`, `POST /api/ai/summarize`
 
 ## Design Fidelity
 
@@ -95,7 +97,8 @@ Design tokens extracted from the original Next.js app (`globals.css`, `header-st
 ## Build Instructions
 
 ### Prerequisites
-- Flutter SDK (tested with Flutter 3.24.5 on macOS 13.7)
+- Flutter SDK (release web build verified with Flutter 3.50.0 / Dart 3.14.0)
+- Node.js 22 for the API (`npm run build`, `npm start`)
 - Chrome for web development
 
 ### Local Development
@@ -121,20 +124,29 @@ flutter analyze
 dart format lib/
 ```
 
+## API
+
+```bash
+cp .env.example .env   # then fill in DATABASE_URL and storage keys
+npm install
+npm run build
+npm run seed
+npm start              # http://127.0.0.1:8787
+npm run test:api
+```
+
+`neon init` links project `royal-bread-75421306` on branch `production`. `neon deploy` needs `neon login`; until then the API runs locally against the supplied pooled `DATABASE_URL`. The AI Gateway returns 503 until `NEON_AI_GATEWAY_TOKEN` is present.
+
 ## Known Limitations
 
-1. **Firebase Auth not configured**: The app runs in demo mode. Firebase credentials are not in the repository. Configure `firebase_auth` for production email/password + Google SSO.
+1. **Google sign-in and password reset** still need an identity provider. Email and password sign-in uses the API.
 
-2. **PHP backend not running locally**: API integration can't be end-to-end tested without a PHP server + MySQL database. The API client is wired to real endpoints but unverified against a live backend.
+2. **HTML rendering** uses a tag-aware widget renderer. Nested tables and custom CSS from the original documents are simplified.
 
-3. **CORS required**: PHP backend must emit CORS headers for the Flutter origin.
+3. **AI Gateway** is declared in `neon.ts` but not provisioned until `neon login` and `neon deploy` succeed.
 
-4. **HTML rendering**: The contract/page HTML content uses a simple tag stripper (not a full HTML renderer). Complex HTML may not render perfectly.
-
-5. **Neon Postgres**: The task references a Neon project, but the existing PHP app uses MySQL/MariaDB. No database migration was performed.
-
-6. **Milkadmin secret-panel**: The separate `/secret-panel/` (Milkadmin PHP control panel) is not part of the Flutter migration.
+4. **Milkadmin secret-panel** PHP control panel is represented by the Flutter secret-panel screens, not the original PHP app.
 
 ## Backend Configuration
 
-The existing PHP `config.vault.ini` holds database credentials. Do not expose these in Flutter code. The Flutter app only calls JSON API endpoints.
+Copy `.env.example` to `.env`. Do not commit `.env`. The Flutter app only calls JSON API endpoints.

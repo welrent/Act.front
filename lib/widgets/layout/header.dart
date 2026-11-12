@@ -1,10 +1,12 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../models/seed_data.dart';
 import '../../models/user.dart';
 import '../../providers/app_state.dart';
@@ -141,10 +143,7 @@ class _HeaderState extends State<Header> {
     final seenUrls = <String>{};
 
     // 1. Pages (State + SeedData)
-    final allPages = [
-      ...state.pages,
-      ...SeedData.pages,
-    ];
+    final allPages = [...state.pages, ...SeedData.pages];
     for (final page in allPages) {
       final url = '/pages/${page.slug}';
       if (seenUrls.contains(url)) continue;
@@ -152,11 +151,7 @@ class _HeaderState extends State<Header> {
       final matchContent = (page.content ?? '').toLowerCase().contains(lowerQ);
       if (matchTitle || matchContent) {
         seenUrls.add(url);
-        localResults.add({
-          'title': page.title,
-          'type': 'Page',
-          'url': url,
-        });
+        localResults.add({'title': page.title, 'type': 'Page', 'url': url});
       }
     }
 
@@ -165,47 +160,47 @@ class _HeaderState extends State<Header> {
       {
         'title': 'Car Rental Agreement',
         'url': '/pages/car-rental-agreement',
-        'type': 'Agreement'
+        'type': 'Agreement',
       },
       {
         'title': 'Motorcycle Rental Agreement',
         'url': '/pages/motorcycle-rental-agreement',
-        'type': 'Agreement'
+        'type': 'Agreement',
       },
       {
         'title': 'Boat Rental Agreement',
         'url': '/pages/boat-rental-agreement',
-        'type': 'Agreement'
+        'type': 'Agreement',
       },
       {
         'title': 'Equipment Rental Agreement',
         'url': '/pages/equipment-rental-agreement',
-        'type': 'Agreement'
+        'type': 'Agreement',
       },
       {
         'title': 'Fleet Management Agreement',
         'url': '/pages/fleet-management-agreement',
-        'type': 'Agreement'
+        'type': 'Agreement',
       },
       {
         'title': 'Vehicle Damage & Insurance Terms',
         'url': '/pages/damage-insurance-terms',
-        'type': 'Agreement'
+        'type': 'Agreement',
       },
       {
         'title': 'EV Charging & Battery Terms',
         'url': '/pages/ev-charging-battery-terms',
-        'type': 'Agreement'
+        'type': 'Agreement',
       },
       {
         'title': 'Rental Cancellation Policy',
         'url': '/pages/cancellation-policy',
-        'type': 'Agreement'
+        'type': 'Agreement',
       },
       {
         'title': 'Agreements Overview',
         'url': '/agreements',
-        'type': 'Agreement'
+        'type': 'Agreement',
       },
     ];
     for (final agr in agreements) {
@@ -218,10 +213,7 @@ class _HeaderState extends State<Header> {
     }
 
     // 3. Contracts (State + SeedData)
-    final allContracts = [
-      ...state.contracts,
-      ...SeedData.contracts,
-    ];
+    final allContracts = [...state.contracts, ...SeedData.contracts];
     for (final contract in allContracts) {
       final url = '/contracts/${contract.contractRef}';
       if (seenUrls.contains(url)) continue;
@@ -247,12 +239,12 @@ class _HeaderState extends State<Header> {
       {
         'title': 'Company Settings',
         'url': '/secret-panel/settings',
-        'type': 'Admin'
+        'type': 'Admin',
       },
       {
         'title': 'Site Text Editor',
         'url': '/secret-panel/editor',
-        'type': 'Admin'
+        'type': 'Admin',
       },
     ];
     for (final nav in navItems) {
@@ -321,7 +313,8 @@ class _HeaderState extends State<Header> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: isMobile ? 6 : 10),
+                              horizontal: isMobile ? 6 : 10,
+                            ),
                             child: Text(
                               '|',
                               style: TextStyle(
@@ -418,13 +411,15 @@ class _HeaderState extends State<Header> {
                               borderRadius: BorderRadius.circular(8),
                               color: Colors.white,
                               child: Container(
-                                constraints:
-                                    const BoxConstraints(maxHeight: 280),
+                                constraints: const BoxConstraints(
+                                  maxHeight: 280,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(8),
-                                  border:
-                                      Border.all(color: AppColors.borderColor),
+                                  border: Border.all(
+                                    color: AppColors.borderColor,
+                                  ),
                                 ),
                                 child: _buildResultsList(),
                               ),
@@ -491,7 +486,9 @@ class _HeaderState extends State<Header> {
                               onTap: () => _focusNode.requestFocus(),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 6, vertical: 2),
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
                                   color: AppColors.searchShortcutBg,
                                   borderRadius: BorderRadius.circular(4),
@@ -542,10 +539,7 @@ class _HeaderState extends State<Header> {
         padding: EdgeInsets.all(12),
         child: Text(
           'No results found.',
-          style: TextStyle(
-            fontSize: 13,
-            color: AppColors.designMutedLight,
-          ),
+          style: TextStyle(fontSize: 13, color: AppColors.designMutedLight),
         ),
       );
     }
@@ -554,10 +548,8 @@ class _HeaderState extends State<Header> {
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
       itemCount: _results.length,
-      separatorBuilder: (_, __) => const Divider(
-        height: 1,
-        color: AppColors.designBorder,
-      ),
+      separatorBuilder: (_, __) =>
+          const Divider(height: 1, color: AppColors.designBorder),
       itemBuilder: (context, index) {
         final item = _results[index];
         return _SearchResultItem(
@@ -667,10 +659,7 @@ class _SearchResultItem extends StatefulWidget {
   final Map<String, dynamic> item;
   final VoidCallback onTap;
 
-  const _SearchResultItem({
-    required this.item,
-    required this.onTap,
-  });
+  const _SearchResultItem({required this.item, required this.onTap});
 
   @override
   State<_SearchResultItem> createState() => _SearchResultItemState();

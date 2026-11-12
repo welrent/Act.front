@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../theme/colors.dart';
 
 /// Reusable design message / card box — matches .design-message.
@@ -49,10 +50,7 @@ class _DesignMessageState extends State<DesignMessage> {
         cursor: SystemMouseCursors.click,
         onEnter: (_) => setState(() => _isHovered = true),
         onExit: (_) => setState(() => _isHovered = false),
-        child: GestureDetector(
-          onTap: widget.onTap,
-          child: content,
-        ),
+        child: GestureDetector(onTap: widget.onTap, child: content),
       );
     }
 
@@ -147,21 +145,27 @@ class GradientButton extends StatelessWidget {
               loading ? const Color(0xFFC4B8DE) : AppColors.panelGradientStart,
           foregroundColor: Colors.white,
           shadowColor: Colors.transparent,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
         child: loading
             ? const SizedBox(
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation(Colors.white)))
-            : Text(label,
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation(Colors.white),
+                ),
+              )
+            : Text(
+                label,
                 style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700)),
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
       ),
     );
   }
@@ -209,24 +213,29 @@ class StatusBanner extends StatelessWidget {
         children: [
           if (type == 'loading')
             const SizedBox(
-                width: 16,
-                height: 16,
-                child: CircularProgressIndicator(strokeWidth: 2))
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
           else
             Icon(
-                type == 'success'
-                    ? Icons.check_circle
-                    : (type == 'error'
-                        ? Icons.error_outline
-                        : Icons.info_outline),
-                color: textColor,
-                size: 18),
+              type == 'success'
+                  ? Icons.check_circle
+                  : (type == 'error'
+                      ? Icons.error_outline
+                      : Icons.info_outline),
+              color: textColor,
+              size: 18,
+            ),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               message,
               style: TextStyle(
-                  color: textColor, fontSize: 13, fontWeight: FontWeight.w500),
+                color: textColor,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../providers/app_state.dart';
 
 /// Login modal — matches the original LoginModal design.
@@ -37,6 +38,10 @@ class _LoginModalState extends State<LoginModal> {
           );
       if (ok && mounted) {
         Navigator.of(context).pop();
+      } else if (mounted) {
+        setState(() {
+          _error = context.read<AppState>().auth.error ?? 'Sign in failed';
+        });
       }
     } catch (e) {
       setState(() => _error = e.toString());
@@ -94,23 +99,29 @@ class _LoginModalState extends State<LoginModal> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Center(
-                          child: Icon(Icons.lock_outline,
-                              color: Colors.white, size: 28),
+                          child: Icon(
+                            Icons.lock_outline,
+                            color: Colors.white,
+                            size: 28,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 12),
                       const Text(
                         'Sign In',
                         style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFF2F214B)),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF2F214B),
+                        ),
                       ),
                       const SizedBox(height: 4),
                       const Text(
                         'Secure access to Welrent AutoVerhuur',
-                        style:
-                            TextStyle(fontSize: 13, color: Color(0xFF6B7280)),
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Color(0xFF6B7280),
+                        ),
                       ),
                     ],
                   ),
@@ -135,22 +146,33 @@ class _LoginModalState extends State<LoginModal> {
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.error_outline,
-                              color: Color(0xFFDC2626), size: 18),
+                          const Icon(
+                            Icons.error_outline,
+                            color: Color(0xFFDC2626),
+                            size: 18,
+                          ),
                           const SizedBox(width: 8),
                           Expanded(
-                              child: Text(_error,
-                                  style: const TextStyle(
-                                      color: Color(0xFFDC2626), fontSize: 12))),
+                            child: Text(
+                              _error,
+                              style: const TextStyle(
+                                color: Color(0xFFDC2626),
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ],
-                  const Text('Email Address',
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF374151))),
+                  const Text(
+                    'Email Address',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF374151),
+                    ),
+                  ),
                   const SizedBox(height: 6),
                   TextField(
                     controller: _emailController,
@@ -165,16 +187,21 @@ class _LoginModalState extends State<LoginModal> {
                       filled: true,
                       fillColor: const Color(0xFFF9FAFB),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 12),
+                        horizontal: 12,
+                        vertical: 12,
+                      ),
                     ),
                     style: const TextStyle(fontSize: 14),
                   ),
                   const SizedBox(height: 16),
-                  const Text('Password',
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF374151))),
+                  const Text(
+                    'Password',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF374151),
+                    ),
+                  ),
                   const SizedBox(height: 6),
                   TextField(
                     controller: _passwordController,
@@ -189,12 +216,15 @@ class _LoginModalState extends State<LoginModal> {
                       filled: true,
                       fillColor: const Color(0xFFF9FAFB),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 12),
+                        horizontal: 12,
+                        vertical: 12,
+                      ),
                       suffixIcon: IconButton(
                         icon: Icon(
-                            _obscure ? Icons.visibility_off : Icons.visibility,
-                            size: 18,
-                            color: const Color(0xFF9CA3AF)),
+                          _obscure ? Icons.visibility_off : Icons.visibility,
+                          size: 18,
+                          color: const Color(0xFF9CA3AF),
+                        ),
                         onPressed: () => setState(() => _obscure = !_obscure),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -212,7 +242,8 @@ class _LoginModalState extends State<LoginModal> {
                         foregroundColor: Colors.white,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         disabledBackgroundColor: const Color(0xFFC4B8DE),
                       ),
                       child: _loading
@@ -220,25 +251,36 @@ class _LoginModalState extends State<LoginModal> {
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor:
-                                      AlwaysStoppedAnimation(Colors.white)))
-                          : const Text('Sign In',
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation(
+                                  Colors.white,
+                                ),
+                              ),
+                            )
+                          : const Text(
+                              'Sign In',
                               style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w500)),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(height: 24),
-                  Row(
+                  const Row(
                     children: [
-                      const Expanded(child: Divider(color: Color(0xFFE5E7EB))),
+                      Expanded(child: Divider(color: Color(0xFFE5E7EB))),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Text('or continue with',
-                            style: TextStyle(
-                                fontSize: 12, color: const Color(0xFF6B7280))),
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          'or continue with',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF6B7280),
+                          ),
+                        ),
                       ),
-                      const Expanded(child: Divider(color: Color(0xFFE5E7EB))),
+                      Expanded(child: Divider(color: Color(0xFFE5E7EB))),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -251,25 +293,35 @@ class _LoginModalState extends State<LoginModal> {
                               // Google sign-in placeholder
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                    content: Text(
-                                        'Google sign-in requires Firebase configuration')),
+                                  content: Text(
+                                    'Google sign-in requires Firebase configuration',
+                                  ),
+                                ),
                               );
                             },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: const Color(0xFF374151),
                         side: const BorderSide(color: Color(0xFFE5E7EB)),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.g_mobiledata,
-                              size: 20, color: Color(0xFF4285F4)),
+                          Icon(
+                            Icons.g_mobiledata,
+                            size: 20,
+                            color: Color(0xFF4285F4),
+                          ),
                           SizedBox(width: 8),
-                          Text('Google Sign-In',
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500)),
+                          Text(
+                            'Google Sign-In',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -281,13 +333,19 @@ class _LoginModalState extends State<LoginModal> {
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content: Text(
-                                  'Password reset requires Firebase configuration')),
+                            content: Text(
+                              'Password reset requires Firebase configuration',
+                            ),
+                          ),
                         );
                       },
-                      child: const Text('Forgot password?',
-                          style: TextStyle(
-                              fontSize: 12, color: Color(0xFF6B7280))),
+                      child: const Text(
+                        'Forgot password?',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF6B7280),
+                        ),
+                      ),
                     ),
                   ),
                 ],

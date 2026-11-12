@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../theme/colors.dart';
 import '../widgets/layout/app_scaffold.dart';
 import '../widgets/design_message.dart';
@@ -37,8 +38,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final contracts = state.contracts;
 
     if (!user.isAuthenticated) {
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => GoRouter.of(context).push('/'));
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => GoRouter.of(context).push('/'),
+      );
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -56,14 +58,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 colors: [
                   Color(0xFF1E1B24),
                   Color(0xFF2F214B),
-                  Color(0xFF4A3270)
+                  Color(0xFF4A3270),
                 ],
               ),
               boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  blurRadius: 50,
-                ),
+                BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 50),
               ],
             ),
             child: Column(
@@ -75,9 +74,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Text(
                     user.avatarLetter,
                     style: const TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -105,17 +105,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Text(
                         'Email Address',
                         style: TextStyle(
-                            color: AppColors.designMuted,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600),
+                          color: AppColors.designMuted,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     Text(
                       user.email ?? '—',
                       style: const TextStyle(
-                          fontSize: 15,
-                          color: AppColors.designText,
-                          fontWeight: FontWeight.w500),
+                        fontSize: 15,
+                        color: AppColors.designText,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
@@ -126,16 +128,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Text(
                         'User ID (UID)',
                         style: TextStyle(
-                            color: AppColors.designMuted,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600),
+                          color: AppColors.designMuted,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     GestureDetector(
                       onTap: _copyUid,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.pillBg,
                           borderRadius: BorderRadius.circular(6),
@@ -184,7 +189,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: const Text(
                         'Sign Out',
                         style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w600),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -199,9 +206,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const Text(
                 'My Contracts',
                 style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.designText),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.designText,
+                ),
               ),
               const Spacer(),
               InkWell(
@@ -212,9 +220,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: const Text(
                   'Book on main site →',
                   style: TextStyle(
-                      fontSize: 13,
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600),
+                    fontSize: 13,
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],
@@ -225,11 +234,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Center(child: CircularProgressIndicator()),
             )
           else if (contracts.isEmpty)
-            DesignMessage(
-              padding: const EdgeInsets.symmetric(vertical: 40),
+            const DesignMessage(
+              padding: EdgeInsets.symmetric(vertical: 40),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     'No Active Contracts',
                     style: TextStyle(
                       color: AppColors.designMuted,
@@ -237,20 +246,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
+                  SizedBox(height: 8),
+                  Text(
                     'Book a car or motorcycle on the main Welrent site and Act will create your rental contract automatically.',
                     style: TextStyle(fontSize: 15, color: Color(0xFFBDBDBD)),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       RentalCardPill(
-                          label: 'Car agreement',
-                          route: '/pages/car-rental-agreement'),
-                      const SizedBox(width: 8),
+                        label: 'Car agreement',
+                        route: '/pages/car-rental-agreement',
+                      ),
+                      SizedBox(width: 8),
                       RentalCardPill(
                         label: 'Motorcycle agreement',
                         route: '/pages/motorcycle-rental-agreement',
@@ -335,7 +345,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               );
-            }).toList(),
+            }),
           const SizedBox(height: 40),
         ],
       ),

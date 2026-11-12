@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+
 import '../theme/colors.dart';
 import '../widgets/layout/app_scaffold.dart';
 import '../widgets/design_message.dart';
@@ -52,8 +53,12 @@ class _PortalScreenState extends State<PortalScreen> {
     };
   }
 
-  Widget _portalCard(String label, String value, IconData icon,
-      {bool isId = false}) {
+  Widget _portalCard(
+    String label,
+    String value,
+    IconData icon, {
+    bool isId = false,
+  }) {
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
@@ -103,16 +108,21 @@ class _PortalScreenState extends State<PortalScreen> {
     final isMobile = MediaQuery.of(context).size.width < 768;
 
     if (_loading) {
-      return AppScaffold(
-        body: const Center(
+      return const AppScaffold(
+        body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                  width: 44, height: 44, child: CircularProgressIndicator()),
+                width: 44,
+                height: 44,
+                child: CircularProgressIndicator(),
+              ),
               SizedBox(height: 12),
-              Text('Loading profile…',
-                  style: TextStyle(color: AppColors.designMuted, fontSize: 14)),
+              Text(
+                'Loading profile…',
+                style: TextStyle(color: AppColors.designMuted, fontSize: 14),
+              ),
             ],
           ),
         ),
@@ -127,15 +137,19 @@ class _PortalScreenState extends State<PortalScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.lock_outline,
-                    size: 44, color: Color(0xFFC0BDC8)),
+                const Icon(
+                  Icons.lock_outline,
+                  size: 44,
+                  color: Color(0xFFC0BDC8),
+                ),
                 const SizedBox(height: 16),
                 const Text(
                   'Sign in to view your profile',
                   style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.designText),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.designText,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 const Text(
@@ -184,9 +198,10 @@ class _PortalScreenState extends State<PortalScreen> {
                       (_user?['displayName'] ?? _user?['email'] ?? '?')[0]
                           .toUpperCase(),
                       style: const TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF8EB9FF)),
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFF8EB9FF),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 28),
@@ -207,33 +222,40 @@ class _PortalScreenState extends State<PortalScreen> {
                         Text(
                           _user?['email'] ?? '—',
                           style: const TextStyle(
-                              fontSize: 14,
-                              color: Color(0xFF8EB9FF),
-                              fontWeight: FontWeight.w500),
+                            fontSize: 14,
+                            color: Color(0xFF8EB9FF),
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                         const SizedBox(height: 10),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 4),
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: const Color(0xFF8EB9FF).withOpacity(0.12),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                                color:
-                                    const Color(0xFF8EB9FF).withOpacity(0.2)),
+                              color: const Color(0xFF8EB9FF).withOpacity(0.2),
+                            ),
                           ),
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.verified,
-                                  size: 12, color: Color(0xFF8EB9FF)),
+                              Icon(
+                                Icons.verified,
+                                size: 12,
+                                color: Color(0xFF8EB9FF),
+                              ),
                               SizedBox(width: 5),
                               Text(
                                 'Verified Member',
                                 style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF8EB9FF)),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF8EB9FF),
+                                ),
                               ),
                             ],
                           ),
@@ -255,10 +277,17 @@ class _PortalScreenState extends State<PortalScreen> {
               children: [
                 _portalCard('First Name', name['first']!, Icons.person_outline),
                 _portalCard('Last Name', name['last']!, Icons.people_outline),
-                _portalCard('Email Address', _user?['email'] ?? '—',
-                    Icons.email_outlined),
-                _portalCard('Account ID', _user?['uid'] ?? '—', Icons.grid_on,
-                    isId: true),
+                _portalCard(
+                  'Email Address',
+                  _user?['email'] ?? '—',
+                  Icons.email_outlined,
+                ),
+                _portalCard(
+                  'Account ID',
+                  _user?['uid'] ?? '—',
+                  Icons.grid_on,
+                  isId: true,
+                ),
               ],
             ),
             const SizedBox(height: 32),
@@ -267,11 +296,14 @@ class _PortalScreenState extends State<PortalScreen> {
                 OutlinedButton(
                   onPressed: () => GoRouter.of(context).push('/'),
                   style: OutlinedButton.styleFrom(
-                    side:
-                        const BorderSide(color: Color(0xFFEAECF0), width: 1.5),
+                    side: const BorderSide(
+                      color: Color(0xFFEAECF0),
+                      width: 1.5,
+                    ),
                     foregroundColor: AppColors.designText,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
@@ -291,9 +323,11 @@ class _PortalScreenState extends State<PortalScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.dangerBg,
                     foregroundColor: AppColors.danger,
-                    side: BorderSide(color: AppColors.dangerBorder, width: 1.5),
+                    side: const BorderSide(
+                        color: AppColors.dangerBorder, width: 1.5),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     elevation: 0,
                   ),
                   child: const Row(
@@ -316,7 +350,7 @@ class _PortalScreenState extends State<PortalScreen> {
 }
 
 class __LoginModalPlaceholder extends StatelessWidget {
-  const __LoginModalPlaceholder({super.key});
+  const __LoginModalPlaceholder();
 
   @override
   Widget build(BuildContext context) {
@@ -326,8 +360,10 @@ class __LoginModalPlaceholder extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Sign In',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+            const Text(
+              'Sign In',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            ),
             const SizedBox(height: 16),
             const Text(
               'Email/password login requires Firebase configuration.',
@@ -337,12 +373,14 @@ class __LoginModalPlaceholder extends StatelessWidget {
             Row(
               children: [
                 TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Cancel')),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel'),
+                ),
                 const SizedBox(width: 12),
                 ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('OK')),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('OK'),
+                ),
               ],
             ),
           ],
